@@ -67,11 +67,12 @@ for(f in 1:fold){
   y.train <- as.factor(cv.train[,2])
   x.test <- cv.test[,3:ncol(cv.test)]
   x.calib<-calib[,3:ncol(calib)]
+  y.calib<-as.factor(calib[,2])
   y.test <- as.factor(cv.test[,2])
   fit <- svm(x.train,y.train)
 
   trainPredict<- predict(fit, x.train)
-  acct<-confusionMatrix(trainPredict,y.test)
+  acct<-confusionMatrix(trainPredict,y.train)
   trainAccuracy[f]<-acct$overall["Accuracy"]
 
   testPredict <- predict(fit, x.test)
@@ -79,7 +80,7 @@ for(f in 1:fold){
   testAccuracy[f]<-accT$overall["Accuracy"]
 
   calibPredict<- predict(fit, x.calib)
-  accC <-confusionMatrix(calibPredict,y.test)
+  accC <-confusionMatrix(calibPredict,y.calib)
   calibAccuracy[f]<-accC$overall["Accuracy"]
   #xd= confusionMatrix(prediction,y.test)
   #print(xd$overall["Accuracy"])
