@@ -49,7 +49,7 @@ index<-1:nrow(d)
 testAccuracy<-NULL
 calibAccuracy <-NULL
 trainAccuracy <-NULL
-fold<-10
+#fold<-10
 
 sampled = sample(1:nrow(d), size=0.9*nrow(d))
 d2 <- d[sampled, ]
@@ -83,11 +83,12 @@ for(f in 1:fold){
   accC <-confusionMatrix(calibPredict,y.calib)
   calibAccuracy[f]<-accC$overall["Accuracy"]
   #xd= confusionMatrix(prediction,y.test)
-  #print(xd$overall["Accuracy"])
+  print(xd$overall["Accuracy"])
 }
 
 sets <- c("Training", "Testing", "Calibration")
-accuracyRates <-  rbind(which.min(trainAccuracy), which.min(testAccuracy), which.min(calibAccuracy))
+accuracyRates <-  rbind(min(trainAccuracy), min(testAccuracy), min(calibAccuracy))
 results <- cbind(sets,accuracyRates)
 colnames(results) <- c("Set","Accuracy")
 print (results)
+write.csv(results, out, row.names=FALSE)
